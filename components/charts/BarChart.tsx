@@ -15,7 +15,7 @@ interface BarChartProps {
   subtitle?: string;
 }
 
-export function BarChart({
+export const BarChart = React.memo(function BarChart({
   data,
   title = 'Real-Time Bar Density',
   subtitle = 'Category & time binned bar distribution',
@@ -114,4 +114,4 @@ export function BarChart({
   };
 
   return <BaseChartCanvas data={data} onDraw={handleDraw} title={title} subtitle={subtitle} />;
-}
+});

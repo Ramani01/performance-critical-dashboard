@@ -15,7 +15,7 @@ interface ScatterPlotProps {
   subtitle?: string;
 }
 
-export function ScatterPlot({
+export const ScatterPlot = React.memo(function ScatterPlot({
   data,
   title = 'Real-Time Scatter Cloud',
   subtitle = 'Multi-dimensional telemetry distribution (Timestamp vs Secondary Value)',
@@ -97,4 +97,4 @@ export function ScatterPlot({
   };
 
   return <BaseChartCanvas data={data} onDraw={handleDraw} title={title} subtitle={subtitle} />;
-}
+});

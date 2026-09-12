@@ -12,7 +12,7 @@ const INTERVALS: { id: AggregationInterval; label: string }[] = [
   { id: '1h', label: '1 Hour Bucket' },
 ];
 
-export function TimeRangeSelector() {
+export const TimeRangeSelector = React.memo(function TimeRangeSelector() {
   const { aggregationInterval, setAggregationInterval } = useDashboardData();
 
   return (
@@ -42,4 +42,4 @@ export function TimeRangeSelector() {
       </div>
     </div>
   );
-}
+});

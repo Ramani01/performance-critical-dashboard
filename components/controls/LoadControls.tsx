@@ -7,7 +7,7 @@ import { Flame, Minus, Play, Plus, Pause, Sliders } from 'lucide-react';
 
 const PRESETS = [1000, 5000, 10000, 25000, 50000, 100000];
 
-export function LoadControls() {
+export const LoadControls = React.memo(function LoadControls() {
   const {
     targetWorkload,
     resetDataset,
@@ -101,4 +101,4 @@ export function LoadControls() {
       </div>
     </div>
   );
-}
+});

@@ -5,7 +5,7 @@ import { useDashboardData } from '../providers/DataProvider';
 import { formatNumber } from '../../lib/performanceUtils';
 import { Cpu, HardDrive, Layers, Zap } from 'lucide-react';
 
-export function PerformanceMonitor() {
+export const PerformanceMonitor = React.memo(function PerformanceMonitor() {
   const { metrics } = useDashboardData();
   const {
     fps,
@@ -105,4 +105,4 @@ export function PerformanceMonitor() {
       </div>
     </div>
   );
-}
+});

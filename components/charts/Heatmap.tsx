@@ -15,7 +15,7 @@ interface HeatmapProps {
   subtitle?: string;
 }
 
-export function Heatmap({
+export const Heatmap = React.memo(function Heatmap({
   data,
   title = 'Real-Time Heatmap Matrix',
   subtitle = '2D cell density intensity distribution across time and secondary metrics',
@@ -72,4 +72,4 @@ export function Heatmap({
       </div>
     </BaseChartCanvas>
   );
-}
+});

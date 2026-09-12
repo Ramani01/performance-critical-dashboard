@@ -16,7 +16,11 @@ interface LineChartProps {
   subtitle?: string;
 }
 
-export function LineChart({ data, title = 'Real-Time Line Telemetry', subtitle = 'High-density time-series visualization with adaptive downsampling' }: LineChartProps) {
+export const LineChart = React.memo(function LineChart({
+  data,
+  title = 'Real-Time Line Telemetry',
+  subtitle = 'High-density time-series visualization with adaptive downsampling',
+}: LineChartProps) {
   const margin = { top: 30, right: 30, bottom: 40, left: 60 };
 
   const handleDraw = (
@@ -110,4 +114,4 @@ export function LineChart({ data, title = 'Real-Time Line Telemetry', subtitle =
   };
 
   return <BaseChartCanvas data={data} onDraw={handleDraw} title={title} subtitle={subtitle} />;
-}
+});

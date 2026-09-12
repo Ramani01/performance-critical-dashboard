@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useTransition } from 'react';
 import { useDashboardData } from '../providers/DataProvider';
 import { CATEGORY_COLORS } from '../../lib/canvasUtils';
 import { CategoryType } from '../../lib/types';
@@ -13,8 +13,10 @@ const CATEGORIES: { id: CategoryType; label: string }[] = [
   { id: 'delta', label: 'Delta' },
 ];
 
-export function FilterPanel() {
+export const FilterPanel = React.memo(function FilterPanel() {
   const { filters, setFilters } = useDashboardData();
+  const [searchInput, setSearchInput] = useState(filters.searchQuery);
+  const [isPending, startTransition] = useTransition();
 
   const toggleCategory = (cat: CategoryType) => {
     setFilters((prev) => {
@@ -27,15 +29,21 @@ export function FilterPanel() {
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
-    setFilters((prev) => ({ ...prev, searchQuery: val }));
+    setSearchInput(val);
+    startTransition(() => {
+      setFilters((prev) => ({ ...prev, searchQuery: val }));
+    });
   };
 
   const resetFilters = () => {
-    setFilters({
-      categories: ['alpha', 'beta', 'gamma', 'delta'],
-      valueRange: [-100, 100],
-      timeWindowMs: null,
-      searchQuery: '',
+    setSearchInput('');
+    startTransition(() => {
+      setFilters({
+        categories: ['alpha', 'beta', 'gamma', 'delta'],
+        valueRange: [-100, 100],
+        timeWindowMs: null,
+        searchQuery: '',
+      });
     });
   };
 
@@ -86,12 +94,15 @@ export function FilterPanel() {
 
         {/* Live Search Input */}
         <div className="flex flex-col gap-1.5">
-          <label className="text-xs font-medium text-slate-400">Telemetry Search:</label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs font-medium text-slate-400">Telemetry Search:</label>
+            {isPending && <span className="text-[10px] text-cyan-400 font-mono animate-pulse">Filtering...</span>}
+          </div>
           <div className="relative">
             <Search className="w-4 h-4 absolute left-3 top-2.5 text-slate-500" />
             <input
               type="text"
-              value={filters.searchQuery}
+              value={searchInput}
               onChange={handleSearchChange}
               placeholder="Search by ID, Sensor, or Node..."
               className="w-full bg-slate-950/80 border border-slate-800 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors"
@@ -101,4 +112,4 @@ export function FilterPanel() {
       </div>
     </div>
   );
-}
+});

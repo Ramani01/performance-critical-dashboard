@@ -7,7 +7,7 @@ import { CATEGORY_COLORS } from '../../lib/canvasUtils';
 import { formatNumber } from '../../lib/performanceUtils';
 import { Database } from 'lucide-react';
 
-export function DataTable() {
+export const DataTable = React.memo(function DataTable() {
   const { filteredPoints } = useDashboardData();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -97,4 +97,4 @@ export function DataTable() {
       </div>
     </div>
   );
-}
+});
