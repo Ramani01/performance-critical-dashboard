@@ -83,6 +83,23 @@ Our custom `useVirtualization` hook:
 * Calculates visible row indices based on `scrollTop`.
 * Renders only ~15 to 25 visible rows + overscan buffer in the DOM tree, regardless of whether the dataset contains 1,000 or 100,000 records.
 
+### F. React 18 Concurrent Rendering & Memoization Techniques
+To guarantee non-blocking UI responsiveness:
+1. **`useTransition` Concurrent Search**: Text input filtering in `FilterPanel.tsx` uses React 18 `startTransition()`. Typing in the search input updates local input state immediately at 60 FPS while heavy array filtering computes concurrently.
+2. **`React.memo` Component Boundaries**: All chart views (`LineChart`, `BarChart`, `ScatterPlot`, `Heatmap`), controls, and table widgets are wrapped with `React.memo` to prevent re-renders when parent state updates.
+3. **Fine-Grained `useMemo` & `useCallback`**: Domain bounds, axis ticks, heatmap plasma matrices, and callback handlers are memoized to avoid recalculation.
+
+### G. Next.js App Router & Scaling Strategy
+1. **Server vs. Client Component Split**:
+   * Root layout (`app/layout.tsx`), dashboard layout (`app/dashboard/layout.tsx`), and landing route (`app/page.tsx`) execute as Server Components for optimal initial HTML shell delivery.
+   * Interactive chart workspace, HUD telemetry, and control panels use `'use client'` for real-time Canvas rendering and Web Worker communication.
+2. **Streaming & Progressive Loading**:
+   * Dedicated `app/loading.tsx` Suspense boundary renders a progressive loading shell while JavaScript chunks and Web Worker threads initialize.
+3. **API Route Handlers**:
+   * `app/api/data/route.ts` provides a GET endpoint (`/api/data?count=10000`) for initial dataset fetching and API client integration.
+4. **Static Page Generation (SSG)**:
+   * Prerenders static application shells during `next build` while client-side streaming handles continuous high-frequency updates.
+
 ---
 
 ## 📈 5. Stress Test & Bottleneck Analysis
